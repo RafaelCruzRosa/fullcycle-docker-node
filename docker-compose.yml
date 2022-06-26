@@ -7,10 +7,13 @@ services:
       dockerfile: ./docker/node/Dockerfile
     volumes:
       - ./:/app
+      - /app/node_modules
     networks:
       - node-network
     depends_on:
       - db
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s node app.js
+    container_name: app
   nginx:
     build: ./docker/nginx
     ports:
@@ -19,6 +22,7 @@ services:
       - node-network
     depends_on:
       - app
+    container_name: nginx
   db:
     image: mysql:5.7
     command: --innodb-use-native-aio=0
