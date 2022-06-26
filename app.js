@@ -10,9 +10,11 @@ const connection = mysql.createConnection({
 })
  
 connection.connect(error => {
-    if (error) throw error;
+    if (error) console.log("Error connected to the database.");
     console.log("Successfully connected to the database.");
 });
+
+connection.query("CREATE TABLE IF NOT EXISTS people (id int AUTO_INCREMENT, name varchar(50), PRIMARY KEY (id))")
 
 app.set("trust proxy", "127.0.0.1")
 
